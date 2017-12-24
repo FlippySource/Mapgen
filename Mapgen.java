@@ -82,7 +82,7 @@ public class Mapgen {
 				bd[pickx][picky] = 1;
 			}
 
-			ArrayList picks = recurseFill(bd, boardx, boardy, random, pickx, picky, pixelfill, 0);
+			ArrayList<Pixel> picks = recurseFill(bd, boardx, boardy, random, pickx, picky, pixelfill, 0);
 
 			for (int i = 0; i < picks.size(); i++) {
 				Pixel temp = (Pixel) picks.get(i);
@@ -91,24 +91,24 @@ public class Mapgen {
 			}
 
 			pixelfill -= picks.size();
-			picks = new ArrayList();
+			picks = new ArrayList<Pixel>();
 		}
 
 		return bd;
 
 	}
 
-	public ArrayList recurseFill(int[][] bd, int boardx, int boardy, Random rand, int px, int py, int pixelfills,
+	public ArrayList<Pixel> recurseFill(int[][] bd, int boardx, int boardy, Random rand, int px, int py, int pixelfills,
 			int depth) {// something is exiting its recursion early and not handing back up some
 						// information
 		int[][] board = bd;
 		if (depth > 1200) {
 			// makeImage(boardx, boardy, board);
-			return (new ArrayList());
+			return (new ArrayList<Pixel>());
 		}
 
 		if (px == 999 || px == 0 || py == 999 || py == 0) {
-			return (new ArrayList());
+			return (new ArrayList<Pixel>());
 		}
 		try {
 
@@ -116,8 +116,8 @@ public class Mapgen {
 
 				int nx = 0;
 				int ny = 0;
-				ArrayList out = new ArrayList();
-				ArrayList choices = new ArrayList();
+				ArrayList<Pixel> out = new ArrayList<Pixel>();
+				ArrayList<Pixel> choices = new ArrayList<Pixel>();
 
 				if (board[px + 1][py + 1] == 0) {
 					choices.add(new Pixel(px + 1, py + 1, 1));
@@ -152,7 +152,7 @@ public class Mapgen {
 				}
 
 				if (choices.size() == 0) {
-					return (new ArrayList());
+					return (new ArrayList<Pixel>());
 				}
 
 				out.add(choices.get(rand.nextInt(choices.size())));
@@ -187,7 +187,7 @@ public class Mapgen {
 			System.out.println(e);
 		}
 
-		return (new ArrayList());
+		return (new ArrayList<Pixel>());
 	}
 
 	public int[][] smoothBoard(int[][] board) {
