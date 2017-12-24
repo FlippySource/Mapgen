@@ -73,7 +73,6 @@ public class Mapgen {
 											// adjacent
 		int pixelfill = pixelfills;
 		int[][] bd = board;
-		int errorcount = 0;
 
 		while (pixelfill > 0) {
 			int pickx = random.nextInt(boardx - 1);
@@ -119,36 +118,18 @@ public class Mapgen {
 				ArrayList<Pixel> out = new ArrayList<Pixel>();
 				ArrayList<Pixel> choices = new ArrayList<Pixel>();
 
-				if (board[px + 1][py + 1] == 0) {
-					choices.add(new Pixel(px + 1, py + 1, 1));
-				}
-
-				if (board[px][py + 1] == 0) {
-					choices.add(new Pixel(px, py + 1, 1));
-				}
-
-				if (board[px + 1][py] == 0) {
-					choices.add(new Pixel(px + 1, py, 1));
-				}
-
-				if (board[px - 1][py - 1] == 0) {
-					choices.add(new Pixel(px - 1, py - 1, 1));
-				}
-
-				if (board[px - 1][py] == 0) {
-					choices.add(new Pixel(px - 1, py, 1));
-				}
-
-				if (board[px][py - 1] == 0) {
-					choices.add(new Pixel(px, py - 1, 1));
-				}
-
-				if (board[px - 1][py + 1] == 0) {
-					choices.add(new Pixel(px - 1, py + 1, 1));
-				}
-
-				if (board[px + 1][py - 1] == 0) {
-					choices.add(new Pixel(px + 1, py - 1, 1));
+				for(int i = -1; i <= 1; i++)
+				{
+					for (int j = -1; j <= 1; j++)
+					{
+						if (board[px + i][py +  j] == 0) 
+						{
+							if (!( i== 0 && j == 0))
+							{
+								choices.add(new Pixel(px + i, py + j, 1));
+							}
+						}
+					}
 				}
 
 				if (choices.size() == 0) {
@@ -226,28 +207,28 @@ public class Mapgen {
 		return board;
 	}
 
-	public int[][] bridgeBuilder(int[][] board) {
-		int last = 0;
-		int segStart = 0;
-		int segEnd = 0;
-		for (int y = 0; y < board[0].length; y++) {
-			for (int x = 0; x < board.length; x++) {
-				if (board[x][y] == 1 && last == 0) {
-					segStart = x;
+	public int[][] bridgeBuilder(int[][] board, int bridgeWidth, int bridgeLength) {
+		int xlen = board.length;
+		int ylen = board [0].length;
+		int curlen = bridgeLength;
+		//horizontal first
+		for (int x = 0; x < board.length; x++) {
+			
+		
+			for (int y = 0; y < board[x].length; y++) {
+				curlen = (y + bridgeLength >= ylen)? bridgeLength : (ylen - y - 1);
+				for (int i = 0; i < curlen; i++)
+				if (board[x][y] + i == 1)//fill one pixel if opp then for each width do it again even if redundant
+				{
+					
 				}
-
-				else if (board[x][y] == 0 && last == 1) {
-					segEnd = x;
-					// find if there is 1 within 1/12 of the board below to bridge too (at least x
-					// len?)
-				}
-
-				last = board[x][y];
-
+					
+				
+	
 			}
-
 		}
-		return board;
+			return board;
+		
 	}
 
 }
